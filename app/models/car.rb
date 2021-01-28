@@ -10,11 +10,10 @@ class Car
         return results.map do |result|
           {
             "id" => result["id"].to_i,
-            "name" => result["name"],
-            "founded"=> result["founded"].to_i,
-            "country" => result["country"],
-            "parent_id" => result["parent_id"].to_i,
-            "image" => result["image"]
+            "model" => result["model"],
+            "rating"=> result["rating"].to_i,
+            "image" => result["image"],
+            "description" => result["description"]
           }
         end
       end
@@ -22,37 +21,35 @@ class Car
     def self.find(id)
       results = DB.exec(
           <<-SQL
-          SELECT parent.* FROM car as parent
-          LEFT JOIN car as child 
-          ON parent.id=child.parent_id
+          SELECT car.* FROM company 
+          LEFT JOIN car 
+          ON car.company_id=company.id
           WHERE id=#{id}
           SQL
       )
       return {
         "id" => result["id"].to_i,
-        "name" => result["name"],
-        "founded"=> result["founded"].to_i,
-        "country" => result["country"],
-        "parent_id" => result["parent_id"].to_i,
-        "image" => result["image"]
+            "model" => result["model"],
+            "rating"=> result["rating"].to_i,
+            "image" => result["image"],
+            "description" => result["description"]
       }
     end
   
     def self.create(opts)
       results = DB.exec(
           <<-SQL
-              INSERT INTO car (id, name, founded, country, parent_id)
-              VALUES ( '#{opts["name"]}', #{opts["founded"]}, '#{opts["country"]}', #{opts["parent_id"]} )
-              RETURNING id, name, founded, country, parent_id;
+              INSERT INTO car (id, name, model, rating, image, description)
+              VALUES ( '#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]},''#{opts["image"]}')
+              RETURNING id, name, model, rating, image, description;
           SQL
       )
       return {
-          "id" => results.first["id"].to_i,
-          "name" => results.first["name"],
-          "founded" => results.first["founded"].to_i,
-          "country" => results.first["country"],
-          "parent_id" => results.first["parent_id"].to_i,
-          "image" => result["image"]
+        "id" => result["id"].to_i,
+        "model" => result["model"],
+        "rating"=> result["rating"].to_i,
+        "image" => result["image"],
+        "description" => result["description"]
       }
     end
   
@@ -64,18 +61,18 @@ class Car
     def self.update(id, opts)
       results = DB.exec(
           <<-SQL
-              UPDATE people
-              SET name='#{opts["name"]}', founded=#{opts["founded"]}, country='#{opts["country"]}', parent_id=#{opts["parent_id"]}
+              UPDATE car
+              SET name='#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]},''#{opts["image"]}'
               WHERE id=#{id}
-              RETURNING id, name, founded, country, parent_id;
+              RETURNING id, name, model, rating, image, description;
           SQL
       )
       return {
-          "id" => results.first["id"].to_i,
-          "name" => results.first["name"],
-          "founded" => results.first["founded"].to_i,
-          "country" => results.first["country"],
-          "parent_id" => results.first["parent_id"].to_i
+        "id" => result["id"].to_i,
+        "model" => result["model"],
+        "rating"=> result["rating"].to_i,
+        "image" => result["image"],
+        "description" => result["description"]
       }
     end
 end
