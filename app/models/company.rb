@@ -58,7 +58,7 @@ class Company
     def self.create(opts)
       results = DB.exec(
           <<-SQL
-              INSERT INTO company (id, name, founded, country, parent_id)
+              INSERT INTO company (name, founded, country, parent_id)
               VALUES ( '#{opts["name"]}', #{opts["founded"]}, '#{opts["country"]}', #{opts["parent_id"]} )
               RETURNING id, name, founded, country, parent_id;
           SQL
