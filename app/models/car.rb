@@ -9,12 +9,7 @@ class Car
         )
         return results.map do |result|
           {
-            "id" => result["id"].to_i,
-            "name" => result["name"],
-            "founded"=> result["founded"].to_i,
-            "country" => result["country"],
-            "parent_id" => result["parent_id"].to_i,
-            "image" => result["image"]
+
           }
         end
       end
@@ -22,19 +17,12 @@ class Car
     def self.find(id)
       results = DB.exec(
           <<-SQL
-          SELECT parent.* FROM car as parent
-          LEFT JOIN car as child 
-          ON parent.id=child.parent_id
+          SELECT * FROM car
           WHERE id=#{id}
           SQL
       )
       return {
-        "id" => result["id"].to_i,
-        "name" => result["name"],
-        "founded"=> result["founded"].to_i,
-        "country" => result["country"],
-        "parent_id" => result["parent_id"].to_i,
-        "image" => result["image"]
+
       }
     end
   
