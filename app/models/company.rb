@@ -2,26 +2,56 @@ class Company
     DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
 
     def self.all
-        results = DB.exec("SELECT * FROM company;")
-        return results.each do |result|
+        results = DB.exec(
+        <<-SQL    
+        SELECT * FROM company;
+        SQL
+        )
+        return results.map do |result|
           {
             "id" => result["id"].to_i,
             "name" => result["name"],
-            "founded"=> result["founded"].to_i,
+            "founded"=> result["founded"],
             "country" => result["country"],
-            "parent_id" => result["parent_id"].to_i
+            "parent_id" => result["parent_id"].to_i,
+            "image" => result["image"]
           }
         end
       end
   
     def self.find(id)
-      results = DB.exec("SELECT * FROM company WHERE id=#{id};")
+      results = DB.exec(
+          <<-SQL
+          SELECT
+          parent.*,
+          child.name as "childName",
+          child.id as "childID",
+          child.image as "childImage"
+          FROM company as parent
+          LEFT JOIN company as child 
+          ON parent.id=child.parent_id
+          WHERE parent.id=#{id}
+          SQL
+      )
+    if results.first["childID"].to_i > 0
+        childrenArray = results.map do |result|
+            {
+            "childID" => result["childID"].to_i,
+            "childName" => result["childName"],
+            "childImage" => result["childImage"]
+            }
+        end
+    end
+      result = results.first
       return {
         "id" => result["id"].to_i,
         "name" => result["name"],
-        "founded"=> result["founded"].to_i,
+        "founded"=> result["founded"],
         "country" => result["country"],
-        "parent_id" => result["parent_id"].to_i
+        "parent_id" => result["parent_id"].to_i,
+        "image" => result["image"],
+        "children" => childrenArray
+
       }
     end
   
@@ -36,9 +66,10 @@ class Company
       return {
           "id" => results.first["id"].to_i,
           "name" => results.first["name"],
-          "founded" => results.first["founded"].to_i,
+          "founded" => results.first["founded"],
           "country" => results.first["country"],
-          "parent_id" => results.first["parent_id"].to_i
+          "parent_id" => results.first["parent_id"].to_i,
+          "image" => result["image"]
       }
     end
   
@@ -59,7 +90,7 @@ class Company
       return {
           "id" => results.first["id"].to_i,
           "name" => results.first["name"],
-          "founded" => results.first["founded"].to_i,
+          "founded" => results.first["founded"],
           "country" => results.first["country"],
           "parent_id" => results.first["parent_id"].to_i
       }
