@@ -1,10 +1,10 @@
-class Company
+class Company < ApplicationRecord
     # DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
     if(ENV['DATABASE_URL'])
       uri = URI.parse(ENV['DATABASE_URL'])
       DB = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
     else
-      DB = PG.connect(host: "localhost", port: 5432, dbname: 'contact_development')
+      DB = PG.connect(host: "localhost", port: 5432, dbname: 'vroom_development')
     end
 
     def self.all
