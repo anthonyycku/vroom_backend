@@ -1,4 +1,4 @@
-class Company < ApplicationRecord
+class Company
     # DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
     if ENV["DATABASE_URL"]
       PG.connect(ENV['DATABASE_URL'])
