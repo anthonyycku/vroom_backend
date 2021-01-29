@@ -9,6 +9,7 @@ class Car
         )
         return results.map do |result|
           {
+
             "id" => result["id"].to_i,
             "model" => result["model"],
             "rating"=> result["rating"].to_i,
@@ -25,6 +26,7 @@ class Car
           SELECT car.* FROM company 
           LEFT JOIN car 
           ON car.company_id=company.id
+          SELECT * FROM car
           WHERE id=#{id}
           SQL
       )

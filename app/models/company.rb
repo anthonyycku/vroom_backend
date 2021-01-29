@@ -58,7 +58,7 @@ class Company
     def self.create(opts)
       results = DB.exec(
           <<-SQL
-              INSERT INTO company (id, name, founded, country, parent_id)
+              INSERT INTO company (name, founded, country, parent_id)
               VALUES ( '#{opts["name"]}', #{opts["founded"]}, '#{opts["country"]}', #{opts["parent_id"]} )
               RETURNING id, name, founded, country, parent_id;
           SQL
@@ -81,7 +81,7 @@ class Company
     def self.update(id, opts)
       results = DB.exec(
           <<-SQL
-              UPDATE people
+              UPDATE company
               SET name='#{opts["name"]}', founded=#{opts["founded"]}, country='#{opts["country"]}', parent_id=#{opts["parent_id"]}
               WHERE id=#{id}
               RETURNING id, name, founded, country, parent_id;
