@@ -1,5 +1,11 @@
-class Company
-    DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
+class Company < ApplicationRecord
+    # DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
+    if(ENV['DATABASE_URL'])
+      uri = URI.parse(ENV['DATABASE_URL'])
+      DB = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
+    else
+      DB = PG.connect(host: "localhost", port: 5432, dbname: 'vroom_development')
+    end
 
     def self.all
         results = DB.exec(
@@ -58,18 +64,16 @@ class Company
     def self.create(opts)
       results = DB.exec(
           <<-SQL
-              INSERT INTO company (name, founded, country, parent_id)
-              VALUES ( '#{opts["name"]}', #{opts["founded"]}, '#{opts["country"]}', #{opts["parent_id"]} )
-              RETURNING id, name, founded, country, parent_id;
+              INSERT INTO company (name, country, description, image, parent_id)
+              VALUES ( '#{opts["name"]}', '#{opts["country"]}', '#{opts["description"]}', '#{opts["image"]}', #{opts["parent_id"]})
+              RETURNING id, name, country, parent_id, description, image;
           SQL
       )
       return {
           "id" => results.first["id"].to_i,
           "name" => results.first["name"],
-          "founded" => results.first["founded"],
           "country" => results.first["country"],
-          "parent_id" => results.first["parent_id"].to_i,
-          "image" => result["image"]
+          "parent_id" => results.first["parent_id"].to_i
       }
     end
   
