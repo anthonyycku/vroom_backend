@@ -13,7 +13,8 @@ class Car
             "model" => result["model"],
             "rating"=> result["rating"].to_i,
             "image" => result["image"],
-            "description" => result["description"]
+            "description" => result["description"],
+            "company_id" => result["company_id"].to_i
           }
         end
       end
@@ -32,7 +33,8 @@ class Car
             "model" => result["model"],
             "rating"=> result["rating"].to_i,
             "image" => result["image"],
-            "description" => result["description"]
+            "description" => result["description"],
+            "company_id" => result["company_id"].to_i
       }
     end
   
@@ -41,7 +43,7 @@ class Car
           <<-SQL
               INSERT INTO car (id, name, model, rating, image, description)
               VALUES ( '#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]},''#{opts["image"]}')
-              RETURNING id, name, model, rating, image, description;
+              RETURNING id, name, model, rating, image, description, company_id;
           SQL
       )
       return {
@@ -49,7 +51,8 @@ class Car
         "model" => result["model"],
         "rating"=> result["rating"].to_i,
         "image" => result["image"],
-        "description" => result["description"]
+        "description" => result["description"],
+        "company_id" => result["company_id"].to_i
       }
     end
   
@@ -64,7 +67,7 @@ class Car
               UPDATE car
               SET name='#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]},''#{opts["image"]}'
               WHERE id=#{id}
-              RETURNING id, name, model, rating, image, description;
+              RETURNING id, name, model, rating, image, description, company_id;
           SQL
       )
       return {
@@ -72,7 +75,8 @@ class Car
         "model" => result["model"],
         "rating"=> result["rating"].to_i,
         "image" => result["image"],
-        "description" => result["description"]
+        "description" => result["description"],
+        "company_id" => result["company_id"].to_i
       }
     end
 end
