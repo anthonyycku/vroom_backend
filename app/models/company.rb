@@ -51,7 +51,7 @@ class Company < ApplicationRecord
       return {
         "id" => result["id"].to_i,
         "name" => result["name"],
-        "description" => result["description"]
+        "description" => result["description"],
         "country" => result["country"],
         "parent_id" => result["parent_id"].to_i,
         "image" => result["image"],
