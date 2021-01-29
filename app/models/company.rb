@@ -65,7 +65,11 @@ class Company < ApplicationRecord
       results = DB.exec(
           <<-SQL
               INSERT INTO company (name, country, description, image, parent_id)
-              VALUES ( '#{opts["name"]}', '#{opts["country"]}', '#{opts["description"]}', '#{opts["image"]}', #{opts["parent_id"]})
+              VALUES ('#{opts["name"]}',
+              '#{opts["country"]}',
+              '#{opts["description"]}',
+              '#{opts["image"]}',
+              #{opts["parent_id"]})
               RETURNING id, name, country, parent_id, description, image;
           SQL
       )

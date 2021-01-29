@@ -20,9 +20,14 @@ companies = [
     {"name"=>"Tesla", "country"=>"USA"}
 ]
 
-companies.each do |result|
-    Company.create("name"=> result["name"], "country"=> result["country"], "description"=> result["description"],"image"=> result["description"],"parent_id"=> result["parent_id"])
+companies.each { |result|
 
-end
+    Company.create("name"=> result["name"], 
+        "country"=> result["country"], 
+        "description"=> result["description"],
+        "image"=> result["image"],
+        "parent_id"=> result["parent_id"].to_i)
+}
 
-# Company.create("name"=>"hi", "country"=>"GA", "description"=>"hello","image"=>"hello.jpg","parent_id"=>"1")
+
+# Company.create("name"=>"hi", "country"=>"GA", "description"=>"","image"=>"","parent_id"=>1)
