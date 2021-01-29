@@ -1,10 +1,9 @@
 class Company < ApplicationRecord
     # DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
-    if(ENV['DATABASE_URL'])
-      uri = URI.parse(ENV['DATABASE_URL'])
-      DB = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
-    else
-      DB = PG.connect(host: "localhost", port: 5432, dbname: 'vroom_development')
+    if ENV["DATABASE_URL"]
+      PG.connect(ENV['DATABASE_URL'])
+    elsif
+      DB = PG.connect({:host => "localhost", :port => 5432, :dbname => 'vroom_development'})
     end
 
     def self.all
@@ -17,7 +16,7 @@ class Company < ApplicationRecord
           {
             "id" => result["id"].to_i,
             "name" => result["name"],
-            "founded"=> result["founded"],
+            "description" => result["description"],
             "country" => result["country"],
             "parent_id" => result["parent_id"].to_i,
             "image" => result["image"]
@@ -52,7 +51,7 @@ class Company < ApplicationRecord
       return {
         "id" => result["id"].to_i,
         "name" => result["name"],
-        "founded"=> result["founded"],
+        "description" => result["description"]
         "country" => result["country"],
         "parent_id" => result["parent_id"].to_i,
         "image" => result["image"],
