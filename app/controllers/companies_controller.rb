@@ -21,6 +21,6 @@ class CompaniesController < ApplicationController
     # end
 
     def index
-        render json: "hi"
+        render json: {"hi", status: 200}
     end
 end
