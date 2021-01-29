@@ -71,6 +71,7 @@ class Company < ApplicationRecord
       return {
           "id" => results.first["id"].to_i,
           "name" => results.first["name"],
+          "description" => results.first["description"],
           "country" => results.first["country"],
           "parent_id" => results.first["parent_id"].to_i
       }
@@ -87,13 +88,14 @@ class Company < ApplicationRecord
               UPDATE company
               SET name='#{opts["name"]}', founded=#{opts["founded"]}, country='#{opts["country"]}', parent_id=#{opts["parent_id"]}
               WHERE id=#{id}
-              RETURNING id, name, founded, country, parent_id;
+              RETURNING id, name, description, image, country, parent_id;
           SQL
       )
       return {
           "id" => results.first["id"].to_i,
           "name" => results.first["name"],
-          "founded" => results.first["founded"],
+          "description" => results.first["description"],
+          "image" => results.first["image"],
           "country" => results.first["country"],
           "parent_id" => results.first["parent_id"].to_i
       }

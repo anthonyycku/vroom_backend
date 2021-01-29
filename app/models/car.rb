@@ -30,6 +30,7 @@ class Car
           WHERE id=#{id}
           SQL
       )
+      result = results.first
       return {
         "id" => result["id"].to_i,
             "model" => result["model"],
@@ -43,11 +44,12 @@ class Car
     def self.create(opts)
       results = DB.exec(
           <<-SQL
-              INSERT INTO car (id, name, model, rating, image, description)
-              VALUES ( '#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]},''#{opts["image"]}')
+              INSERT INTO car (name, model, rating, image, description, company_id)
+              VALUES ( '#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]}', '#{opts["description]}', #{opts["company_id"]}, )
               RETURNING id, name, model, rating, image, description, company_id;
           SQL
       )
+      result = results.first
       return {
         "id" => result["id"].to_i,
         "model" => result["model"],
@@ -67,11 +69,13 @@ class Car
       results = DB.exec(
           <<-SQL
               UPDATE car
-              SET name='#{opts["name"]}', '#{opts["model"]}', #{opts["rating"]}, '#{opts["image"]},''#{opts["image"]}'
+              SET name='#{opts["name"]}', model='#{opts["model"]}', rating=#{opts["rating"]}, image='#{opts["image"]}',
+              description='#{opts["description"]}', company_id='#{opts["image"]}'
               WHERE id=#{id}
               RETURNING id, name, model, rating, image, description, company_id;
           SQL
       )
+      result = results.first
       return {
         "id" => result["id"].to_i,
         "model" => result["model"],
