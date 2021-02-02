@@ -24,7 +24,7 @@ class Company < ApplicationRecord
           }
         end
       end
-  
+
     def self.find(id)
       results = DB.exec(
           <<-SQL
