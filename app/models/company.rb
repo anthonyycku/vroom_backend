@@ -50,6 +50,26 @@ class Company < ApplicationRecord
     end
       result = results.first
       return {
+<<<<<<< HEAD
+=======
+  if(ENV['DATABASE_URL'])
+    uri = URI.parse(ENV['DATABASE_URL'])
+    DB = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
+  else
+    DB = PG.connect(host: "localhost", port: 5432, dbname: 'vroom_development')
+  end
+
+  def self.all
+    results = DB.exec(
+    <<-SQL    
+    SELECT * FROM company
+    ORDER BY id ASC;
+    SQL
+    )
+    return results.map do |result|
+      {
+
+>>>>>>> 4156e4e08fa275954d16d970b22432da918f9076
         "id" => result["id"].to_i,
         "name" => result["name"],
         "description" => result["description"],
@@ -60,6 +80,10 @@ class Company < ApplicationRecord
 
       }
     end
+<<<<<<< HEAD
+=======
+
+>>>>>>> 4156e4e08fa275954d16d970b22432da918f9076
   
     def self.create(opts)
       results = DB.exec(
@@ -104,5 +128,32 @@ class Company < ApplicationRecord
           "country" => results.first["country"],
           "parent_id" => results.first["parent_id"].to_i
       }
+<<<<<<< HEAD
+=======
+
+  end
+
+def self.find(id)
+  results = DB.exec(
+      <<-SQL
+      SELECT
+      parent.*,
+      child.name as "childName",
+      child.id as "childID",
+      child.image as "childImage"
+      FROM company as parent
+      LEFT JOIN company as child 
+      ON parent.id=child.parent_id
+      WHERE parent.id=#{id}
+      SQL
+  )
+if results.first["childID"].to_i > 0
+    childrenArray = results.map do |result|
+        {
+        "childID" => result["childID"].to_i,
+        "childName" => result["childName"],
+        "childImage" => result["childImage"]
+        }
+>>>>>>> 4156e4e08fa275954d16d970b22432da918f9076
     end
 end
