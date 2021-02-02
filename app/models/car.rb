@@ -26,7 +26,7 @@ class Car
           SELECT car.* FROM company 
           LEFT JOIN car 
           ON car.company_id=company.id
-          SELECT * FROM car
+          SELECT * FROM car 
           WHERE id=#{id}
           SQL
       )

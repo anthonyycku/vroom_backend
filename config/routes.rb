@@ -2,7 +2,8 @@ Rails.application.routes.draw do
   # For details on the DSL available within this file, see https://guides.rubyonrails.org/routing.html
 
   get '/companies', to:'companies#index'
-  get '/companies/:id', to:'companies#show'
+  get '/companySort/contry', to:'companySort#show' 
+  # get '/companies/:id', to:'companies#show'
   post '/companies', to:'companies#create'
   delete '/companies/:id', to:'companies#delete'
   put '/companies/:id', to:'companies#update'
@@ -12,4 +13,4 @@ Rails.application.routes.draw do
   post '/cars', to:'cars#create'
   delete '/cars/:id', to:'cars#delete'
   put '/cars/:id', to:'cars#update'
-end
+  end

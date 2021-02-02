@@ -1,5 +1,5 @@
 class Company < ApplicationRecord
-    # DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
+    DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
     if(ENV['DATABASE_URL'])
       uri = URI.parse(ENV['DATABASE_URL'])
       DB = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
@@ -10,7 +10,7 @@ class Company < ApplicationRecord
     def self.all
         results = DB.exec(
         <<-SQL    
-        SELECT * FROM company;
+        SELECT * FROM company ORDER BY id ASC;
         SQL
         )
         return results.map do |result|
@@ -36,7 +36,7 @@ class Company < ApplicationRecord
           FROM company as parent
           LEFT JOIN company as child 
           ON parent.id=child.parent_id
-          WHERE parent.id=#{id}
+          WHERE parent.id=#{id} ORDER BY child.name ASC;
           SQL
       )
     if results.first["childID"].to_i > 0
@@ -70,7 +70,7 @@ class Company < ApplicationRecord
               '#{opts["description"]}',
               '#{opts["image"]}',
               #{opts["parent_id"]})
-              RETURNING id, name, country, parent_id, description, image;
+              RETURNING id, name, country, parent_id, description, image ;
           SQL
       )
       return {
