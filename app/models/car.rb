@@ -8,9 +8,15 @@ class Car
 
   def self.all
       results = DB.exec(
-      <<-SQL    
-      SELECT * FROM car;
-      SQL
+
+          <<-SQL
+          SELECT car.* FROM company 
+          LEFT JOIN car 
+          ON car.company_id=company.id
+          SELECT * FROM car 
+          WHERE id=#{id}
+          SQL
+
       )
       return results.map do |result|
         {

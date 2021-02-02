@@ -22,5 +22,12 @@ ActiveRecord::Schema.define(version: 2021_01_29_053808) do
     t.string "image"
     t.integer "parent_id"
   end
+  create_table "car", force: :cascade do |t|
+    t.string "name"
+    t.string "description"
+    t.string "image"
+    t.string "country"
+    t.integer "company_id"
+  end
 
 end
