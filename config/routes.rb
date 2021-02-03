@@ -15,5 +15,4 @@ Rails.application.routes.draw do
   put '/cars/:id', to:'cars#update'
   # Filter routes
   get '/filter/type/:id/:type', to:'cars#filterType'
-
 end
