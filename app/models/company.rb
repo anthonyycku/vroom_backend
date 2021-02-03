@@ -113,7 +113,12 @@ end
 def self.filterCountry()
   results = DB.exec(
     <<-SQL
+<<<<<<< HEAD
     SELECT * FROM company
+=======
+    SELECT  * FROM company
+    
+>>>>>>> d3b2bdd8f07ea5621b3906e1023a495d2bd1b6c3
     ORDER BY  country ASC
     SQL
   )
