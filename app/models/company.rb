@@ -1,5 +1,4 @@
 class Company < ApplicationRecord
-
     DB = PG.connect({:host=>"localhost", :port => 5432, :dbname => 'vroom_development'})
     if(ENV['DATABASE_URL'])
       uri = URI.parse(ENV['DATABASE_URL'])
@@ -25,7 +24,7 @@ class Company < ApplicationRecord
           }
         end
       end
-  
+
     def self.find(id)
       results = DB.exec(
           <<-SQL
@@ -73,10 +72,11 @@ class Company < ApplicationRecord
         "description" => result["description"],
         "country" => result["country"],
         "parent_id" => result["parent_id"].to_i,
-        "image" => result["image"]
+        "image" => result["image"],
+        "children" => childrenArray
+
       }
     end
-
   
     def self.create(opts)
       results = DB.exec(
@@ -146,67 +146,29 @@ if results.first["childID"].to_i > 0
         "childImage" => result["childImage"]
         }
     end
-end
-  result = results.first
-  return {
-    "id" => result["id"].to_i,
-    "name" => result["name"],
-    "description" => result["description"],
-    "country" => result["country"],
-    "parent_id" => result["parent_id"].to_i,
-    "image" => result["image"],
-    "children" => childrenArray
+# FILTERS
 
-  }
-end
 
-def self.create(opts)
+def self.filterCountry()
   results = DB.exec(
-      <<-SQL
-          INSERT INTO company (name, country, description, image, parent_id)
-          VALUES ('#{opts["name"]}',
-          '#{opts["country"]}',
-          '#{opts["description"]}',
-          '#{opts["image"]}',
-          #{opts["parent_id"]})
-          RETURNING id, name, country, parent_id, description, image;
-      SQL
+    <<-SQL
+    SELECT company * FROM company
+    
+    ORDER BY  country ASC
+    SQL
   )
-  return {
-      "id" => results.first["id"].to_i,
-      "name" => results.first["name"],
-      "description" => results.first["description"],
-      "country" => results.first["country"],
-      "parent_id" => results.first["parent_id"].to_i
+  return results.map do |result|
+    {
+      "id" => result["id"].to_i,
+      "name" => result["name"],
+      "description" => result["description"],
+      "country" => result["country"],
+      "parent_id" => result["parent_id"].to_i,
+      "image" => result["image"],
+      "children" => childrenArray
   }
+  end
 end
 
-def self.delete(id)
-  results = DB.exec("DELETE FROM company WHERE id=#{id};")
-  return { "deleted" => true }
-end
-
-def self.update(id, opts)
-  results = DB.exec(
-      <<-SQL
-          UPDATE company
-          SET name='#{opts["name"]}',
-          description='#{opts["description"]}',
-          country='#{opts["country"]}', image='#{opts["image"]}',
-          parent_id=#{opts["parent_id"]}
-          WHERE id=#{id}
-          RETURNING id, name, description, image, country, parent_id;
-      SQL
-  )
-  results.first["parent_id"] = 0 if results.first["parent_id"] == nil
-  return {
-      "id" => results.first["id"].to_i,
-      "name" => results.first["name"],
-      "description" => results.first["description"],
-      "image" => results.first["image"],
-      "country" => results.first["country"],
-      "parent_id" => results.first["parent_id"].to_i
-  }
-end
 
 end
