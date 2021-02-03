@@ -1,11 +1,10 @@
 Rails.application.routes.draw do
 
-  get '/companies', to:'companies#index'
-  get '/companySort/contry', to:'companySort#show' 
-  # get '/companies/:id', to:'companies#show'
-  post '/companies', to:'companies#create'
-  delete '/companies/:id', to:'companies#delete'
-  put '/companies/:id', to:'companies#update'
+  get '/companies', to: 'companies#index'
+  get '/companies/:id', to: 'companies#show'
+  post '/companies', to: 'companies#create'
+  put '/companies/:id', to: 'companies#update'
+  delete '/companies/:id', to: 'companies#delete'
   get '/filter/country', to:'companies#filterCountry'
   get '/filter/countryDesc', to:'companies#filterCountryDesc'
   get '/filter/alphabeticalASC', to:'companies#alphabeticalASC'
@@ -19,5 +18,4 @@ Rails.application.routes.draw do
   put '/cars/:id', to:'cars#update'
   # Filter routes
   get '/filter/type/:id/:type', to:'cars#filterType'
-  #Filter country
 end
