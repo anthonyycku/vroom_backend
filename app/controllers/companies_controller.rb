@@ -24,5 +24,25 @@ class CompaniesController < ApplicationController
       render json: Company.filterCountry()
   end
   
+  def filterCountryDesc
+      render json: Company.filterCountryDesc()
+  end
+  
+  def alphabeticalASC
+      render json: Company.alphabeticalASC()
+  end
+  
+  def alphabeticalDesc
+      render json: Company.alphabeticalDesc()
+  end
+  
+  def countcarsASC
+      render json: Company.countcarsASC()
+  end
+  
+  def countcarsDESC
+      render json: Company.countcarsDESC()
+  end
+  
   end
   
