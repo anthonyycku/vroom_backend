@@ -50,8 +50,6 @@ class Company < ApplicationRecord
     end
       result = results.first
       return {
-<<<<<<< HEAD
-=======
   if(ENV['DATABASE_URL'])
     uri = URI.parse(ENV['DATABASE_URL'])
     DB = PG.connect(uri.hostname, uri.port, nil, nil, uri.path[1..-1], uri.user, uri.password)
@@ -69,7 +67,6 @@ class Company < ApplicationRecord
     return results.map do |result|
       {
 
->>>>>>> 4156e4e08fa275954d16d970b22432da918f9076
         "id" => result["id"].to_i,
         "name" => result["name"],
         "description" => result["description"],
@@ -80,10 +77,6 @@ class Company < ApplicationRecord
 
       }
     end
-<<<<<<< HEAD
-=======
-
->>>>>>> 4156e4e08fa275954d16d970b22432da918f9076
   
     def self.create(opts)
       results = DB.exec(
@@ -128,8 +121,6 @@ class Company < ApplicationRecord
           "country" => results.first["country"],
           "parent_id" => results.first["parent_id"].to_i
       }
-<<<<<<< HEAD
-=======
 
   end
 
@@ -154,6 +145,30 @@ if results.first["childID"].to_i > 0
         "childName" => result["childName"],
         "childImage" => result["childImage"]
         }
->>>>>>> 4156e4e08fa275954d16d970b22432da918f9076
     end
+# FILTERS
+
+
+def self.filterCountry()
+  results = DB.exec(
+    <<-SQL
+    SELECT company * FROM company
+    
+    ORDER BY  country ASC
+    SQL
+  )
+  return results.map do |result|
+    {
+      "id" => result["id"].to_i,
+      "name" => result["name"],
+      "description" => result["description"],
+      "country" => result["country"],
+      "parent_id" => result["parent_id"].to_i,
+      "image" => result["image"],
+      "children" => childrenArray
+  }
+  end
+end
+
+
 end

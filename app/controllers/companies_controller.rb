@@ -20,5 +20,9 @@ class CompaniesController < ApplicationController
         render json: Company.update(params["id"], params["company"])
     end
 
+    def filterCountry
+        render json: Company.filterCountry()
+    end
+
 
 end
