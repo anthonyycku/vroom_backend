@@ -152,7 +152,7 @@ if results.first["childID"].to_i > 0
 def self.filterCountry()
   results = DB.exec(
     <<-SQL
-    SELECT company * FROM company
+    SELECT  * FROM company
     
     ORDER BY  country ASC
     SQL
@@ -170,5 +170,67 @@ def self.filterCountry()
   end
 end
 
+def self.filterCountryDesc()
+  results = DB.exec(
+    <<-SQL
+    SELECT * FROM company
+    
+    ORDER BY  country DESC
+    SQL
+  )
+  return results.map do |result|
+    {
+      "id" => result["id"].to_i,
+      "name" => result["name"],
+      "description" => result["description"],
+      "country" => result["country"],
+      "parent_id" => result["parent_id"].to_i,
+      "image" => result["image"],
+      "children" => childrenArray
+  }
+  end
+end
+
+def self.alphabeticalASC()
+  results = DB.exec(
+    <<-SQL
+    SELECT  * FROM company
+    
+    ORDER BY  name ASC
+    SQL
+  )
+  return results.map do |result|
+    {
+      "id" => result["id"].to_i,
+      "name" => result["name"],
+      "description" => result["description"],
+      "country" => result["country"],
+      "parent_id" => result["parent_id"].to_i,
+      "image" => result["image"],
+      "children" => childrenArray
+  }
+  end
+end
+
+def self.alphabeticalDesc()
+  results = DB.exec(
+    <<-SQL
+    SELECT  * FROM company
+    
+    ORDER BY  name DESC
+    SQL
+  )
+  return results.map do |result|
+    {
+      "id" => result["id"].to_i,
+      "name" => result["name"],
+      "description" => result["description"],
+      "country" => result["country"],
+      "parent_id" => result["parent_id"].to_i,
+      "image" => result["image"],
+      "children" => childrenArray
+  }
+  end
+end
 
 end

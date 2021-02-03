@@ -23,6 +23,15 @@ class CompaniesController < ApplicationController
     def filterCountry
         render json: Company.filterCountry()
     end
+    
+    def filterCountryDesc
+        render json: Company.filterCountryDesc()
+    end
 
-
+    def alphabeticalASC
+        render json: Company.alphabeticalASC()
+    end
+    def alphabeticalDesc
+        render json: Company.alphabeticalDesc()
+    end
 end
